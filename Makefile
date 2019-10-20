@@ -4,6 +4,7 @@
 CC=arm-none-eabi-g++
 OBJCOPY=arm-none-eabi-objcopy
 EMULATOR=/Applications/mGBA.app/Contents/MacOS/mGBA
+SOURCES= main.cpp Sprite.cpp Utilities.cpp Object.cpp
 
 clean:
 	rm -rf *.o
@@ -11,9 +12,11 @@ clean:
 	rm -rf *.elf
 	rm -rf *.gba
 
+debug: main.cpp
+	g++ -g $(SOURCES) -o test.exe
+
 compile: main.cpp
-	$(CC) -c main.cpp -mthumb-interwork -mthumb -O2 -o main.o
-	$(CC) main.o -mthumb-interwork -mthumb -specs=gba.specs -o main.elf
+	$(CC) -o main.elf -mthumb-interwork -mthumb -O2 -specs=gba.specs $(SOURCES)
 
 copybin: main.elf
 	$(OBJCOPY) -v -O binary main.elf main.gba
